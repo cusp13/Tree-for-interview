@@ -1,0 +1,59 @@
+            1
+           /
+          2
+        /  \
+       4    9
+     /  \    \
+    6    5    3
+             /  \
+            7     8
+
+Output: 1 2 4 6 5 7 8
+
+code:-
+bool isLeaf(Node *root){
+    return !root->left && !root->right;
+}
+void addleft(Node *root, vector<int>&ans){
+    Node *temp = root->left;
+    while(temp){
+        if(!isLeaf(temp))ans.push_back(temp->data);
+          if(temp->left) temp=temp->left;
+          else temp=temp->right;
+    }
+}
+
+void addright(Node *root,vector<int>&ans){
+    Node *temp = root->right;
+    vector<int>v;
+    while(temp){
+        if(!isLeaf(temp))v.push_back(temp->data);
+         if(temp->right) temp=temp->right;
+          else temp=temp->left;
+    }
+   for(int i=v.size()-1;i>=0;i--){
+       ans.push_back(v[i]);
+   }
+}
+
+void addleaf(Node *root,vector<int>&ans){
+    Node *temp = root;
+        if(isLeaf(temp)) {
+            ans.push_back(temp->data);
+            return;
+        }
+        if(temp->left) addleaf(temp->left,ans);
+        if(temp->right) addleaf(temp->right,ans);
+    }
+    vector <int> boundary(Node *root)
+    {
+        vector<int>ans;
+        if (!root) return ans;
+        if(!isLeaf(root)) ans.push_back(root->data);
+        addleft(root,ans);
+        addleaf(root,ans);
+        addright(root,ans);
+        
+        return ans;
+        
+    }
