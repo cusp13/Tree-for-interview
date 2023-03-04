@@ -1,0 +1,41 @@
+Input: root = [3,9,20,null,null,15,7]
+Output: [[9],[3,15],[20],[7]]
+Explanation:
+Column -1: Only node 9 is in this column.
+Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
+Column 1: Only node 20 is in this column.
+Column 2: Only node 7 is in this column.
+
+code:-
+vector<vector<int>> verticalTraversal(TreeNode* root) {
+        queue<pair<TreeNode*,pair<int,int>>>todo;
+        map<int,map<int,multiset<int>>>node;
+        todo.push({root,{0,0}});
+        while(!todo.empty()){
+            auto temp = todo.front();
+            todo.pop();
+            TreeNode *temp1 = temp.first;
+            int x = temp.second.first;
+            int y = temp.second.second;
+            node[x][y].insert(temp1->val);
+            if(temp1->left){
+                todo.push({temp1->left,{x-1,y+1}});
+            }
+            if(temp1->right){
+                todo.push({temp1->right,{x+1,y+1}});
+            }
+        }
+        for(auto it:node){
+            for(auto it1:it.second)
+                cout<<it1.second.size()<<" ";
+        }
+        vector<vector<int>>ans;
+        for(auto it:node){
+        vector<int>col;
+            for(auto it1:it.second){
+                col.insert(col.end(),it1.second.begin(),it1.second.end());
+            }
+            ans.push_back(col);
+        }
+        return ans;
+    }
